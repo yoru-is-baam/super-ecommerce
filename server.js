@@ -1,6 +1,7 @@
 import app from "./src/app.js";
+import config from "./src/configs/config.mongodb.js";
 
-const PORT = 3055;
+const PORT = config.app.port || 3056;
 
 const server = app.listen(PORT, () => {
   console.log(`WSV eCommerce start with port ${PORT}`);

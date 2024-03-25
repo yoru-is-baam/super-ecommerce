@@ -1,8 +1,10 @@
 "use strict";
 
 import mongoose from "mongoose";
+import config from "../configs/config.mongodb.js";
 
-const connectionString = `mongodb://127.0.0.1:27017/shopDEV`;
+const connectionString = `mongodb://${config.db.host}:${config.db.port}/${config.db.name}`;
+console.log(connectionString);
 
 import { countConnect } from "../helpers/check.connect.js";
 
