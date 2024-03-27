@@ -1,12 +1,32 @@
 @url_dev=http://localhost:3052/v1/api
+@api_key=abcasdasasasdasdasd
+@client_id=6603beb5a99632298136c240
+@access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjAzYmViNWE5OTYzMjI5ODEzNmMyNDAiLCJlbWFpbCI6InNob3B0aXBqc0BnbWFpbC5jb20iLCJpYXQiOjE3MTE1Mjg5MzMsImV4cCI6MTcxMTcwMTczM30.KFJjslXhQB8qEtlZUK-kcyDNM9BTkLK7YRPTBPT30zI
 
 ### sign up
 POST {{url_dev}}/shop/signup
 Content-Type: application/json
-x-api-key: abcasdasasasdasdasd
+x-api-key: {{api_key}}
 
 {
   "name": "Shop TIPS",
-  "email": "shoptipjs04@gmail.com",
+  "email": "shoptipjs@gmail.com",
   "password": "abc123"
 }
+
+### log in
+POST {{url_dev}}/shop/login
+Content-Type: application/json
+x-api-key: {{api_key}}
+
+{
+  "email": "shoptipjs@gmail.com",
+  "password": "abc123"
+}
+
+### log out
+POST {{url_dev}}/shop/logout
+Content-Type: application/json
+x-api-key: {{api_key}}
+x-client-id: {{client_id}}
+Authorization: {{access_token}}

@@ -4,13 +4,12 @@ import express from "express";
 const router = express.Router();
 
 import accessRouter from "./access/index.js";
-import { apiKey, permission } from "../auth/checkAuth.js";
+import Authorization from "../middlewares/authorization.js";
 
-// // check apiKey
-// router.use(apiKey);
-// // check permission
-// router.use(permission("0000"));
-
-router.use("/v1/api", accessRouter);
+router.use(
+  "/v1/api",
+  // [Authorization.apiKey, Authorization.permission("0000")],
+  accessRouter
+);
 
 export default router;

@@ -1,10 +1,7 @@
-"use strict";
-
 import JWT from "jsonwebtoken";
 
-const createTokenPair = async (payload, accessTokenKey, refreshTokenKey) => {
-  try {
-    // accessToken
+export class Jwt {
+  static createTokenPair = (payload, accessTokenKey, refreshTokenKey) => {
     const accessToken = JWT.sign(payload, accessTokenKey, {
       expiresIn: "2 days",
     });
@@ -14,7 +11,10 @@ const createTokenPair = async (payload, accessTokenKey, refreshTokenKey) => {
     });
 
     return { accessToken, refreshToken };
-  } catch (error) {}
-};
+  };
 
-export { createTokenPair };
+  static verifyToken = (token, key) => {
+    const decoded = JWT.verify(token, key);
+    return decoded;
+  };
+}

@@ -1,9 +1,2 @@
-"use strict";
-
-import _ from "lodash";
-
-const getInfoData = ({ fields = [], object = {} }) => {
-  return _.pick(object, fields);
-};
-
-export { getInfoData };
+export * from "./jwt.js";
+export * from "./serializer.js";

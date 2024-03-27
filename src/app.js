@@ -1,4 +1,5 @@
 import "dotenv/config";
+import "express-async-errors";
 import compression from "compression";
 import express from "express";
 import helmet from "helmet";
