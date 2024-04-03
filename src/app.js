@@ -10,9 +10,9 @@ const app = express();
 // init middleware
 app.use(express.json());
 app.use(
-  express.urlencoded({
-    extended: true,
-  })
+	express.urlencoded({
+		extended: true,
+	})
 );
 app.use(morgan("dev"));
 app.use(helmet());
@@ -24,25 +24,25 @@ import "./dbs/init.mongodb.js";
 // checkOverload();
 
 // init router
-import router from "./routes/index.js";
+import routerV1 from "./routes/v1/index.js";
 
-app.use("/", router);
+app.use("/api/v1", routerV1);
 
 // handling error
 app.use((req, res, next) => {
-  const error = new Error("Not Found");
-  error.status = 404;
-  next(error);
+	const error = new Error("Not Found");
+	error.status = 404;
+	next(error);
 });
 
 app.use((error, req, res, next) => {
-  const statusCode = error.status || 500;
+	const statusCode = error.status || 500;
 
-  return res.status(statusCode).json({
-    status: "error",
-    code: statusCode,
-    message: error.message || "Internal Server Error",
-  });
+	return res.status(statusCode).json({
+		status: "error",
+		code: statusCode,
+		message: error.message || "Internal Server Error",
+	});
 });
 
 export default app;
