@@ -1,16 +1,19 @@
 "use strict";
 
-import { Jwt } from "../utils/index.js";
-import { HEADER } from "../constants/index.js";
-import { AuthFailureError, NotFoundError } from "../core/error.response.js";
-import KeyTokenService from "../services/keyToken.service.js";
+import { JwtService } from "../common/utils/index.js";
+import { HEADER } from "../common/constants/index.js";
+import {
+	AuthFailureError,
+	NotFoundError,
+} from "../common/core/error.response.js";
+import { KeyTokenService } from "../services/index.js";
 
 class Authentication {
 	static authenticateToken = async (req, res, next) => {
-		const userId = req.headers[HEADER.CLIENT_ID];
-		if (!userId) throw new AuthFailureError("Invalid request");
+		const shopId = req.headers[HEADER.CLIENT_ID];
+		if (!shopId) throw new AuthFailureError("Invalid request");
 
-		const keyStore = await KeyTokenService.findByUserId(userId);
+		const keyStore = await KeyTokenService.findKeyToken({ shop: shopId });
 		if (!keyStore) throw new NotFoundError("Not found key store");
 
 		let accessToken;
@@ -21,12 +24,15 @@ class Authentication {
 		if (!accessToken) throw new AuthFailureError("Invalid request");
 
 		try {
-			const decodedUser = Jwt.verifyToken(accessToken, keyStore.accessTokenKey);
-			if (userId !== decodedUser.userId)
-				throw new AuthFailureError("Invalid user id");
+			const decodedShop = JwtService.verifyToken(
+				accessToken,
+				keyStore.accessTokenKey
+			);
+			if (shopId !== decodedShop.shopId)
+				throw new AuthFailureError("Invalid shop id");
 
 			req.keyStore = keyStore;
-			req.user = decodedUser;
+			req.shop = decodedShop;
 
 			next();
 		} catch (error) {

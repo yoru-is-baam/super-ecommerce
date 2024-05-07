@@ -1,3 +1,1 @@
-import ProductRepository from "./product.repo.js";
-
-export { ProductRepository };
+export * from "./product.repo.js";

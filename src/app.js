@@ -19,9 +19,13 @@ app.use(helmet());
 app.use(compression());
 
 // init db
-import "./dbs/init.mongodb.js";
+import "./db/init.mongodb.js";
 // import { checkOverload } from "./helpers/check.connect.js";
 // checkOverload();
+
+// error handler middlewares
+import notFoundMiddleware from "./middlewares/not-found.js";
+import errorHandlerMiddleware from "./middlewares/error-handler.js";
 
 // init router
 import routerV1 from "./routes/v1/index.js";
@@ -29,20 +33,7 @@ import routerV1 from "./routes/v1/index.js";
 app.use("/api/v1", routerV1);
 
 // handling error
-app.use((req, res, next) => {
-	const error = new Error("Not Found");
-	error.status = 404;
-	next(error);
-});
-
-app.use((error, req, res, next) => {
-	const statusCode = error.status || 500;
-
-	return res.status(statusCode).json({
-		status: "error",
-		code: statusCode,
-		message: error.message || "Internal Server Error",
-	});
-});
+app.use("*", notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 
 export default app;

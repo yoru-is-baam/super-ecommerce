@@ -2,7 +2,7 @@
 
 import { ShopModel } from "../models/index.js";
 
-class ShopService {
+export class ShopService {
 	static create = async ({ name, email, password, roles }) => {
 		return await ShopModel.create({
 			name,
@@ -12,18 +12,27 @@ class ShopService {
 		});
 	};
 
-	static findByEmail = async ({
-		email,
+	static findShop = async (
+		fields,
 		select = {
 			email: 1,
-			password: 2,
+			name: 1,
+			status: 1,
+			roles: 1,
+		}
+	) => {
+		return await ShopModel.findOne(fields).select(select).lean();
+	};
+
+	static findShopById = async ({
+		id,
+		select = {
+			email: 1,
 			name: 1,
 			status: 1,
 			roles: 1,
 		},
 	}) => {
-		return await ShopModel.findOne({ email }).select(select).lean();
+		return await ShopModel.findById(id).select(select).lean();
 	};
 }
-
-export default ShopService;

@@ -1,0 +1,39 @@
+"use strict";
+
+import { Schema, model } from "mongoose";
+
+const DOCUMENT_NAME = "Key";
+const COLLECTION_NAME = "Keys";
+
+// Declare the Schema of the Mongo model
+const keyTokenSchema = new Schema(
+	{
+		shop: {
+			type: Schema.Types.ObjectId,
+			required: true,
+			ref: "Shop",
+		},
+		accessTokenKey: {
+			type: String,
+			required: true,
+		},
+		refreshTokenKey: {
+			type: String,
+			required: true,
+		},
+		refreshTokenUsed: {
+			type: Array,
+			default: [],
+		},
+		refreshToken: {
+			type: String,
+			required: true,
+		},
+	},
+	{
+		timestamps: true,
+		collection: COLLECTION_NAME,
+	}
+);
+
+export default model(DOCUMENT_NAME, keyTokenSchema);

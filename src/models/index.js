@@ -1,9 +1,9 @@
-import ApiKeyModel from "./apikey.model.js";
+import ApiKeyModel from "./api-key.model.js";
 import FurnitureModel from "./furniture.model.js";
 import ProductModel from "./product.model.js";
-import KeyTokenModel from "./keytoken.model.js";
+import KeyTokenModel from "./key-token.model.js";
 import ShopModel from "./shop.model.js";
-import ElectronicModel from "./electronic.model.js";
+import ElectronicsModel from "./electronics.model.js";
 import ClothingModel from "./clothing.model.js";
 
 export {
@@ -12,6 +12,6 @@ export {
 	ProductModel,
 	KeyTokenModel,
 	ShopModel,
-	ElectronicModel,
+	ElectronicsModel,
 	ClothingModel,
 };

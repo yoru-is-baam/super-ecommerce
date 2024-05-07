@@ -1,31 +1,29 @@
 "use strict";
 
-import {
-	ProductModel,
-	ElectronicModel,
-	ClothingModel,
-	FurnitureModel,
-} from "../index.js";
+import { ProductModel } from "../index.js";
+import { Types } from "mongoose";
 
-class ProductRepository {
-	static findAllDrafts = async ({ query, limit, skip }) => {
-		return await queryProduct({ query, limit, skip });
+export class ProductRepository {
+	static updateProduct = async ({ shop, productId, payload, model }) => {
+		return await model
+			.findOneAndUpdate(
+				{
+					shop: new Types.ObjectId(shop),
+					_id: new Types.ObjectId(productId),
+				},
+				payload
+			)
+			.lean();
 	};
 
-	static findAllPublishing = async ({ query, limit, skip }) => {
-		return await queryProduct({ query, limit, skip });
+	static findSpecificProducts = async ({ query, limit, skip }) => {
+		return await ProductModel.find(query)
+			.populate("shop", "name email -_id")
+			.sort({
+				updatedAt: -1,
+			})
+			.skip(skip)
+			.limit(limit)
+			.lean();
 	};
 }
-
-const queryProduct = async ({ query, limit, skip }) => {
-	return await ProductModel.find(query)
-		.populate("shop", "name email -_id")
-		.sort({
-			updatedAt: -1,
-		})
-		.skip(skip)
-		.limit(limit)
-		.lean();
-};
-
-export default ProductRepository;

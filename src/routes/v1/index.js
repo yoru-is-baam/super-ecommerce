@@ -3,14 +3,13 @@
 import express from "express";
 const router = express.Router();
 
-import AccessRouter from "./access/index.js";
-import ProductRouter from "./products/index.js";
+import AuthRouter from "./auth.route.js";
+import ProductRouter from "./product.route.js";
 import Authorization from "../../middlewares/authorization.js";
 
 // router.use(Authorization.apiKey, Authorization.permission("0000"));
 
-router.use("/access", AccessRouter);
-
+router.use("/auth", AuthRouter);
 router.use("/products", ProductRouter);
 
 export default router;

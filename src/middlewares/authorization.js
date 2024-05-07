@@ -1,6 +1,6 @@
-import ApiKeyService from "../services/apikey.service.js";
-import { HEADER } from "../constants/index.js";
-import { ForbiddenError } from "../core/error.response.js";
+import { ApiKeyService } from "../services/index.js";
+import { HEADER } from "../common/constants/index.js";
+import { ForbiddenError } from "../common/core/error.response.js";
 
 class Authorization {
 	static apiKey = async (req, res, next) => {
@@ -8,20 +8,20 @@ class Authorization {
 		if (!key) throw new ForbiddenError();
 
 		// check objKey
-		const objKey = await ApiKeyService.findById(key);
-		if (!objKey) throw new ForbiddenError();
+		const foundApiKey = await ApiKeyService.findById(key);
+		if (!foundApiKey) throw new ForbiddenError();
 
-		req.objKey = objKey;
+		req.apiKey = foundApiKey;
 
 		next();
 	};
 
 	static permission = (permission) => {
 		return async (req, res, next) => {
-			if (!req.objKey.permissions)
+			if (!req.apiKey.permissions)
 				throw new ForbiddenError("Permission denied");
 
-			const isPermissionValid = req.objKey.permissions.includes(permission);
+			const isPermissionValid = req.apiKey.permissions.includes(permission);
 			if (!isPermissionValid) throw new ForbiddenError("Permission denied");
 
 			next();

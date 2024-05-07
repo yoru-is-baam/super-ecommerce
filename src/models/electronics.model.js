@@ -2,10 +2,10 @@
 
 import { model, Schema } from "mongoose";
 
-const DOCUMENT_NAME = "Electronic";
+const DOCUMENT_NAME = "Electronics";
 const COLLECTION_NAME = "Electronics";
 
-const electronicSchema = new Schema(
+const electronicsSchema = new Schema(
 	{
 		manufacturer: { type: String, required: true },
 		model: String,
@@ -18,4 +18,4 @@ const electronicSchema = new Schema(
 	}
 );
 
-export default model(DOCUMENT_NAME, electronicSchema);
+export default model(DOCUMENT_NAME, electronicsSchema);

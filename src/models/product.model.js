@@ -2,6 +2,7 @@
 
 import { model, Schema } from "mongoose";
 import slugify from "slugify";
+import { PRODUCT_TYPE } from "../common/constants/index.js";
 
 const DOCUMENT_NAME = "Product";
 const COLLECTION_NAME = "Products";
@@ -23,13 +24,9 @@ const productSchema = new Schema(
 		type: {
 			type: String,
 			required: true,
-			enum: ["Electronics", "Clothing", "Furniture"],
+			enum: [...Object.values(PRODUCT_TYPE)],
 		},
 		shop: { type: Schema.Types.ObjectId, ref: "Shop" },
-		attributes: {
-			type: Schema.Types.Mixed,
-			required: true,
-		},
 		rating: {
 			type: Number,
 			default: 4.5,
