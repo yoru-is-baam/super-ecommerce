@@ -6,12 +6,13 @@ import {
 	ClothingModel,
 	FurnitureModel,
 } from "../models/index.js";
-import { ProductRepository } from "../models/repository/index.js";
+import { ProductRepository } from "../models/repositories/index.js";
 import {
 	BadRequestError,
 	NotFoundError,
 } from "../common/core/error.response.js";
 import { PRODUCT_TYPE } from "../common/constants/index.js";
+import { InventoryService } from "./inventory.service.js";
 
 export class ProductFactory {
 	static productStrategies = {};
@@ -25,15 +26,15 @@ export class ProductFactory {
 		return new Product(payload).createProduct();
 	};
 
-	static updateProduct = async ({ shop, productId, payload }) => {
+	static updateProduct = async ({ shopId, productId, payload }) => {
 		const Product = ProductFactory.productStrategies[payload.type];
-		return new Product(payload).updateProduct(shop, productId);
+		return new Product(payload).updateProduct(shopId, productId);
 	};
 
-	static publishProduct = async ({ shop, productId }) => {
+	static publishProduct = async ({ shopId, productId }) => {
 		const foundProduct = await ProductRepository.updateProduct({
 			payload: { isDraft: false, isPublished: true },
-			shop,
+			shopId,
 			productId,
 			model: ProductModel,
 		});
@@ -43,10 +44,10 @@ export class ProductFactory {
 		return { productId };
 	};
 
-	static unpublishProduct = async ({ shop, productId }) => {
+	static unpublishProduct = async ({ shopId, productId }) => {
 		const foundProduct = await ProductRepository.updateProduct({
 			payload: { isDraft: true, isPublished: false },
-			shop,
+			shopId,
 			productId,
 			model: ProductModel,
 		});
@@ -57,7 +58,7 @@ export class ProductFactory {
 	};
 
 	// QUERY
-	static findAllDrafts = async ({ shop, limit = 50, skip = 0 }) => {
+	static findAllDrafts = async ({ shopId, limit = 50, skip = 0 }) => {
 		const query = { shop, isDraft: true };
 		const products = await ProductRepository.findSpecificProducts({
 			query,
@@ -68,7 +69,7 @@ export class ProductFactory {
 	};
 
 	static findAllPublishing = async ({ shop, limit = 50, skip = 0 }) => {
-		const query = { shop, isPublished: true };
+		const query = { shopId, isPublished: true };
 		const products = await ProductRepository.findSpecificProducts({
 			query,
 			limit,
@@ -122,7 +123,7 @@ class Product {
 		price,
 		quantity,
 		type,
-		shop,
+		shopId,
 		attributes,
 	}) {
 		this.name = name;
@@ -131,17 +132,25 @@ class Product {
 		this.price = price;
 		this.quantity = quantity;
 		this.type = type;
-		this.shop = shop;
+		this.shopId = shopId;
 		this.attributes = attributes;
 	}
 
 	async createProduct(productId) {
-		return await ProductModel.create({ ...this, _id: productId });
+		await ProductModel.create({ ...this, _id: productId });
+
+		await InventoryService.createInventory({
+			productId,
+			shopId: this.shopId,
+			stock: this.quantity,
+		});
+
+		return { productId };
 	}
 
-	async updateProduct(shop, productId, payload) {
+	async updateProduct(shopId, productId, payload) {
 		return await ProductRepository.updateProduct({
-			shop,
+			shopId,
 			productId,
 			payload,
 			model: ProductModel,
@@ -153,19 +162,19 @@ class Clothing extends Product {
 	async createProduct() {
 		const clothing = await ClothingModel.create({
 			...this.attributes,
-			shop: this.shop,
+			shopId: this.shopId,
 		});
 		const product = await super.createProduct(clothing._id);
 
 		return { productId: product._id };
 	}
 
-	async updateProduct(shop, productId) {
+	async updateProduct(shopId, productId) {
 		const payload = this;
 
 		if (payload.attributes) {
 			await ProductRepository.updateProduct({
-				shop,
+				shopId,
 				productId,
 				payload: payload.attributes,
 				model: ClothingModel,
@@ -174,7 +183,7 @@ class Clothing extends Product {
 
 		delete payload.attributes;
 
-		await super.updateProduct(shop, productId, payload);
+		await super.updateProduct(shopId, productId, payload);
 
 		return { productId };
 	}
@@ -184,19 +193,19 @@ class Electronics extends Product {
 	async createProduct() {
 		const electronic = await ElectronicsModel.create({
 			...this.attributes,
-			shop: this.shop,
+			shopId: this.shopId,
 		});
 		const product = await super.createProduct(electronic._id);
 
 		return { productId: product._id };
 	}
 
-	async updateProduct(shop, productId) {
+	async updateProduct(shopId, productId) {
 		const payload = this;
 
 		if (payload.attributes) {
 			await ProductRepository.updateProduct({
-				shop,
+				shopId,
 				productId,
 				payload: payload.attributes,
 				model: ElectronicsModel,
@@ -205,7 +214,7 @@ class Electronics extends Product {
 
 		delete payload.attributes;
 
-		await super.updateProduct(shop, productId, payload);
+		await super.updateProduct(shopId, productId, payload);
 
 		return { productId };
 	}
@@ -215,19 +224,19 @@ class Furniture extends Product {
 	async createProduct() {
 		const furniture = await FurnitureModel.create({
 			...this.attributes,
-			shop: this.shop,
+			shopId: this.shopId,
 		});
 		const product = await super.createProduct(furniture._id);
 
 		return { productId: product._id };
 	}
 
-	async updateProduct(shop, productId) {
+	async updateProduct(shopId, productId) {
 		const payload = this;
 
 		if (payload.attributes) {
 			await ProductRepository.updateProduct({
-				shop,
+				shopId,
 				productId,
 				payload: payload.attributes,
 				model: FurnitureModel,
@@ -236,7 +245,7 @@ class Furniture extends Product {
 
 		delete payload.attributes;
 
-		await super.updateProduct(shop, productId, payload);
+		await super.updateProduct(shopId, productId, payload);
 
 		return { productId };
 	}

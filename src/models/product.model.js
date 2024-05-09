@@ -26,7 +26,7 @@ const productSchema = new Schema(
 			required: true,
 			enum: [...Object.values(PRODUCT_TYPE)],
 		},
-		shop: { type: Schema.Types.ObjectId, ref: "Shop" },
+		shopId: { type: Schema.Types.ObjectId, ref: "Shop" },
 		rating: {
 			type: Number,
 			default: 4.5,

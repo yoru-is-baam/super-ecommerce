@@ -10,7 +10,7 @@ export default class ProductController {
 			metadata: await ProductService.createProduct({
 				payload: {
 					...req.body,
-					shop: req.shop.shopId,
+					shopId: req.shop.shopId,
 				},
 			}),
 		}).send(res);
@@ -20,7 +20,7 @@ export default class ProductController {
 		new OK({
 			message: "Update successfully!",
 			metadata: await ProductService.updateProduct({
-				shop: req.shop.shopId,
+				shopId: req.shop.shopId,
 				productId: req.params.id,
 				payload: req.body,
 			}),
@@ -31,7 +31,7 @@ export default class ProductController {
 		new OK({
 			message: "Published successfully!",
 			metadata: await ProductService.publishProduct({
-				shop: req.shop.shopId,
+				shopId: req.shop.shopId,
 				productId: req.params.id,
 			}),
 		}).send(res);

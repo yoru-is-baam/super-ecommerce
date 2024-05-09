@@ -3,7 +3,7 @@
 import { ShopModel } from "../models/index.js";
 
 export class ShopService {
-	static create = async ({ name, email, password, roles }) => {
+	static createShop = async ({ name, email, password, roles }) => {
 		return await ShopModel.create({
 			name,
 			email,

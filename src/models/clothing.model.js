@@ -10,7 +10,7 @@ const clothingSchema = new Schema(
 		brand: { type: String, required: true },
 		size: String,
 		material: String,
-		shop: { type: Schema.Types.ObjectId, ref: "Shop" },
+		shopId: { type: Schema.Types.ObjectId, ref: "Shop" },
 	},
 	{
 		collection: COLLECTION_NAME,

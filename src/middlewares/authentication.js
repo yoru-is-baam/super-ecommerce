@@ -13,7 +13,7 @@ class Authentication {
 		const shopId = req.headers[HEADER.CLIENT_ID];
 		if (!shopId) throw new AuthFailureError("Invalid request");
 
-		const keyStore = await KeyTokenService.findKeyToken({ shop: shopId });
+		const keyStore = await KeyTokenService.findKeyToken({ shopId });
 		if (!keyStore) throw new NotFoundError("Not found key store");
 
 		let accessToken;

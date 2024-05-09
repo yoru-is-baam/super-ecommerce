@@ -10,7 +10,7 @@ const electronicsSchema = new Schema(
 		manufacturer: { type: String, required: true },
 		model: String,
 		color: String,
-		shop: { type: Schema.Types.ObjectId, ref: "Shop" },
+		shopId: { type: Schema.Types.ObjectId, ref: "Shop" },
 	},
 	{
 		collection: COLLECTION_NAME,

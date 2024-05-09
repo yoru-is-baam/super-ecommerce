@@ -7,13 +7,14 @@ import AuthController from "../../controllers/auth.controller.js";
 import Authentication from "../../middlewares/authentication.js";
 import AuthValidation from "../../validations/auth.validation.js";
 
-// sign up
 router.post(
 	"/register",
-	// [AuthValidation.registerValidationMiddleware],
+	[AuthValidation.registerValidationMiddleware],
 	AuthController.register
 );
+
 router.post("/login", AuthController.login);
+
 router.post("/refresh-token", AuthController.refreshToken);
 
 router.use(Authentication.authenticateToken);

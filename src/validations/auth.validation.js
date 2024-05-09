@@ -2,8 +2,8 @@ import Joi from "joi";
 import Validation from "../middlewares/validation.js";
 
 const registerSchema = Joi.object({
-	email: Joi.string().required().email().trim().strict(),
 	name: Joi.string().required().trim().strict(),
+	email: Joi.string().required().email().trim().strict(),
 	password: Joi.string()
 		.required()
 		.min(6)

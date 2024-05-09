@@ -1,17 +1,9 @@
-import ApiKeyModel from "./api-key.model.js";
-import FurnitureModel from "./furniture.model.js";
-import ProductModel from "./product.model.js";
-import KeyTokenModel from "./key-token.model.js";
-import ShopModel from "./shop.model.js";
-import ElectronicsModel from "./electronics.model.js";
-import ClothingModel from "./clothing.model.js";
-
-export {
-	ApiKeyModel,
-	FurnitureModel,
-	ProductModel,
-	KeyTokenModel,
-	ShopModel,
-	ElectronicsModel,
-	ClothingModel,
-};
+export { default as ApiKeyModel } from "./api-key.model.js";
+export { default as FurnitureModel } from "./furniture.model.js";
+export { default as ProductModel } from "./product.model.js";
+export { default as KeyTokenModel } from "./key-token.model.js";
+export { default as ShopModel } from "./shop.model.js";
+export { default as ElectronicsModel } from "./electronics.model.js";
+export { default as ClothingModel } from "./clothing.model.js";
+export { default as InventoryModel } from "./inventory.model.js";
+export { default as DiscountModel } from "./discount.model.js";

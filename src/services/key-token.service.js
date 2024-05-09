@@ -9,7 +9,7 @@ export class KeyTokenService {
 		refreshTokenKey,
 		refreshToken = null,
 	}) => {
-		const filter = { shop: shopId },
+		const filter = { shopId },
 			update = {
 				accessTokenKey,
 				refreshTokenKey,

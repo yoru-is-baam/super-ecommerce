@@ -10,12 +10,8 @@ export default class Validation {
 		if (!error) {
 			next();
 		} else {
-			const fields = error.details.reduce((obj, item) => {
-				obj[item.context.key] = item.message;
-				return obj;
-			}, {});
-			console.log(fields);
-			throw new BadRequestError(fields);
+			const message = error.details.map((field) => field.message).join(", ");
+			throw new BadRequestError(message);
 		}
 	};
 
